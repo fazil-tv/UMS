@@ -58,7 +58,7 @@ function AlertDemo() {
                     <AlertDialogFooter>
                         <AlertDialogCancel style={{ marginTop: "0px" }}>Cancel</AlertDialogCancel>
                         <AlertDialogAction disabled={isLoading} onClick={handleLogout}>
-                            {isLoading ? 'Logging out...' : 'Continue'}
+                            {isLoading ? 'Logging out...' : 'Continue'} 
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

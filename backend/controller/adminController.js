@@ -94,8 +94,14 @@ const updateuser =async(req,res)=>{
     }
 }
 
+const adminlogout = async(req,res)=>{
+    res.clearCookie('access_token');
+    res.status(200).json({ message: 'Logout successful' });
+}
+
 export {
     adminLogin,
     getUser,
-    updateuser
+    updateuser,
+    adminlogout
 }

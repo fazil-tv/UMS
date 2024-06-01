@@ -1,14 +1,17 @@
 import React from 'react'
-
+import { useEditUserMutation } from "../../../redux/admin/adminApi";
+import './adminnavbar.css';
+import { Adminlogout } from '../shard/adminlogout';
 function adminnavbar() {
   return (
     <>
-    <nav class="bg-gray-800 p-4">
+    <nav class="bg-black p-4" adminnavbar>
        <div class="container mx-auto flex justify-between items-center">
-           <a class="text-white text-lg font-semibold" href="#">Admin Dashboard</a>
+           <a class="text-white text-lg font-semibold admin-logo" href="#">Admin Dashboard</a>
            <div class="flex space-x-4">
             
-               <a class="text-gray-300 hover:text-white" href="#">Logout</a>
+
+               <Adminlogout />
            </div>
        </div>
    </nav>
