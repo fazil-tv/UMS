@@ -29,7 +29,7 @@ export const apiSlice = createApi({
     }),
     addUser: builder.mutation({
       query: (userData) => ({
-        url: `/api/admin/adduser`,
+        url: `/api/admin/adminadduser`,
         method: "POST",
         body: userData
       }),

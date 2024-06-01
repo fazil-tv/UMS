@@ -6,6 +6,7 @@ import Navbar from '../adminnavbar/adminnavbar'
 import { useGetUserDataMutation } from '../../../redux/admin/adminApi';
 import EditUser from '../edituser/EditUser';
 import './admindashboard.css';
+import { Adduser } from '../shard/adduser';
 
 
 function AdminDashboard() {
@@ -38,8 +39,10 @@ function AdminDashboard() {
   return (
     <>
       <Navbar />
-      <div className='admin-userdata'>
-        <table className="border-collapse  admin-table ">
+
+      <div className='admin-userdata container'>
+        <Adduser onEditComplete={handleEditComplete} className="" />
+        <table className="border-collapse  admin-table mt-5">
           <thead>
             <tr>
               <th className="border px-4 py-2">ID</th>
@@ -60,7 +63,7 @@ function AdminDashboard() {
                   <div className="adminavatar bg-cover">
                     <img
                       alt="img"
-                      src={user.imgUrl ? `/userImages/${user.imgUrl || 'user.png'}` : `/userImages/user.png'`}
+                      src={user.imgUrl ? `/userImages/${user.imgUrl}` : `/userImages/user.png`}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
