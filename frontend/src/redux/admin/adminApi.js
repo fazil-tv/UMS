@@ -20,7 +20,14 @@ export const apiSlice = createApi({
               method: "GET",
             }),
           }),
+          editUser: builder.mutation({
+            query: (userData) => ({
+              url: '/api/admin/updateuser',
+              method: 'POST',
+              body: userData,
+            }),
+          }),
     })
 })  
 
-export const { useAdminloginMutation,useGetUserDataMutation} = apiSlice;
+export const { useAdminloginMutation,useGetUserDataMutation,useEditUserMutation} = apiSlice;

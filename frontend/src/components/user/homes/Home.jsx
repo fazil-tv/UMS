@@ -19,6 +19,11 @@ function Home() {
             <div className="login-wrap">
                 <div className="login">
                     <div className="avatar">
+                    <img
+                  alt="img"
+                  src={currentUserObject.imgUrl ? `/userImages/${currentUserObject.imgUrl || 'user.png'}`: `/userImages/user.png'`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
                     </div>
                     <span className="user"><img src={currentUserObject.imgUrl} alt="" /></span>
                     <h1 className="">{currentUserObject.name}</h1>

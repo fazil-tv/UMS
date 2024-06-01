@@ -58,7 +58,44 @@ const getUser = async (req,res)=>{
     }
 }
 
+const updateuser =async(req,res)=>{
+   
+    console.log("File upload triggered");
+    console.log(req.file, "Request file");
+    console.log(req.body, "Request body");
+
+    let img = '';
+    if (req.file && req.file.originalname) {
+        img = req.file.originalname;
+    } else {
+        const existingUser = await userModel.findById(req.body.id);
+        if (existingUser) {
+            img = existingUser.imgUrl;
+        }
+    }
+
+
+
+    
+    const { name, email, id } = req.body;
+
+    console.log(req.body);
+
+    const user = await userModel.findOneAndUpdate(
+        { _id: id },
+        { name, email, imgUrl: img },
+        { new: true }
+    );
+    
+    if (user) { 
+        res.json({ status: true, message: 'Successfully edited' });
+    } else {
+        res.json({ status: false, message: 'User not found' });
+    }
+}
+
 export {
     adminLogin,
-    getUser
+    getUser,
+    updateuser
 }

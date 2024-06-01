@@ -41,10 +41,17 @@ export function DialogDemo({ currentUser }) {
 
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
-    console.log(file);
     setSelectedAvatar(file);
-    setFormData({ ...formData, imgUrl: file });
+    setFormData({ ...formData, imgUrl: file.name });
   };
+
+
+  const handleAvatarClick = () => {
+    fileInputRef.current.click();
+};
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,15 +60,18 @@ export function DialogDemo({ currentUser }) {
     form.append("name", formData.name);
     form.append("email", formData.email);
     form.append("id", formData.id);
-    form.append("imgUrl", selectedAvatar);
+    if (selectedAvatar) {
+      form.append('imgUrl', selectedAvatar);
+  }else{
+      form.append('imgUrl', formData.imgUrl);
+  }
+ 
 
     try {
       const data = await editUser(form);
       if (data.data.status) {
         const userData = data.data.userData;
-
         dispatch(signInSuccess(userData));
-
         setIsOpen(false);
       }
     } catch (error) {
@@ -70,10 +80,6 @@ export function DialogDemo({ currentUser }) {
   };
 
 
-  const handleAvatarClick = () => {
-    fileInputRef.current.click();
-  };
-
 
 
   return (
@@ -81,9 +87,9 @@ export function DialogDemo({ currentUser }) {
       <DialogTrigger asChild className="">
         <Button variant="outline" className="border-black">Edit Profile</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-black text-white">
+      <DialogContent className="sm:max-w-[425px] bg-white text-black">
         <DialogHeader>
-          <DialogTitle className="text-white padd">Edit profile</DialogTitle>
+          <DialogTitle className="padd">Edit profile</DialogTitle>
           <DialogDescription>
             Make changes to your profile here.
           </DialogDescription>
@@ -91,23 +97,23 @@ export function DialogDemo({ currentUser }) {
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
 
-            <div>
-              <input type="file" accept="image/*" onChange={handleAvatarChange} ref={fileInputRef} style={{ display: 'none' }} name="imgUrl" />
-              <div className="avatar cursor-pointer bg-cover"
-                onClick={handleAvatarClick}
-              >
-
-                {console.log(currentUser.imgUrl, "++++++++++++++++")}
-
-                <img
-                  alt="img"
-                  src={currentUser.imgUrl ? `/userImages/${currentUser.imgUrl}` : `/userImages/user.png`}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-
-
-              </div>
-            </div>
+          <div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleAvatarChange}
+                                ref={fileInputRef}
+                                style={{ display: 'none' }}
+                                name="imgUrl"
+                            />
+                            <div className="avatar cursor-pointer bg-cover" onClick={handleAvatarClick}>
+                                <img
+                                    alt="img"
+                                    src={selectedAvatar  ? URL.createObjectURL(selectedAvatar)  : `/userImages/${currentUser.imgUrl || 'user.png'}`}
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                />
+                            </div>
+                        </div>
 
             <div className="grid grid-cols-4 items-center gap-3 pr-3">
               <Label htmlFor="username" className="text-center">Name</Label>

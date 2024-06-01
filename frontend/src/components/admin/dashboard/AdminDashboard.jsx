@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../adminnavbar/adminnavbar'
 
 import { useGetUserDataMutation } from '../../../redux/admin/adminApi';
+import EditUser from '../edituser/EditUser';
+import './admindashboard.css';
 
 
 function AdminDashboard() {
@@ -12,7 +14,7 @@ function AdminDashboard() {
 
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
+
     const fetchData = async () => {
       try {
         const response = await getUserData({}).unwrap();
@@ -24,26 +26,13 @@ function AdminDashboard() {
       }
     };
 
-    fetchData();
-  }, []);
-
-  console.log(users, "users")
-
-
-  const [editingUserId, setEditingUserId] = useState(null);
-
-  const handleEditClick = (userId) => {
-    // setEditingUserId(userId);
-
-  };
-
-  const handleSaveClick = (userId) => {
-
-    setEditingUserId(null);
-  };
-
-
-
+    useEffect(() => {
+      fetchData();
+    }, []);
+  
+    const handleEditComplete = () => {
+      fetchData();
+    };
 
 
   return (
@@ -53,7 +42,9 @@ function AdminDashboard() {
       <table className="border-collapse w-full">
         <thead>
           <tr>
-            <th className="border px-4 py-2">ID</th>
+          <th className="border px-4 py-2">ID</th>
+            <th className="border px-4 py-2 text-center">profile</th>
+          
             <th className="border px-4 py-2">Name</th>
             <th className="border px-4 py-2">Email</th>
             <th className="border px-4 py-2">Status</th>
@@ -62,14 +53,25 @@ function AdminDashboard() {
         </thead>
         <tbody>
           {users.map((user, index) => (
+
             <tr key={user.id}>
-              <td className="border px-4 py-2">{index + 1}</td>
-              <td className="border px-4 py-2">{editingUserId === user.id ? <input type="text" defaultValue={user.name} /> : user.name}</td>
+               <td className="border px-4 py-2">{index + 1}</td>
+              <td className="border px-4 py-2">  
+               <div className="adminavatar bg-cover">
+                <img
+                  alt="img"
+                  src={user.imgUrl ? `/userImages/${user.imgUrl || 'user.png'}`: `/userImages/user.png'`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+              </td>
+             
+              <td className="border px-4 py-2">{user.name}</td>
               <td className="border px-4 py-2">{user.email}</td>
               <td className="border px-4 py-2">{user.isAdmin ? "false" : "true"}</td>
               <td className="border px-4 py-2">
 
-                <button onClick={() => handleEditClick(user.id)} className="bg-green-500 font-bold py-2 px-4 rounded">Edit</button>
+                <EditUser currentUser={user} onEditComplete={handleEditComplete}/>
 
               </td>
             </tr>

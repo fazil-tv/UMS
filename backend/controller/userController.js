@@ -9,7 +9,7 @@ dotenv.config()
 
 
 const authUser = (async (req, res) => {
-    res.json({ status: true, message: 'welcome to home' })
+    res.json({ status: true, message: 'welcome to home' });
 });
 
 const registerUser = (async (req, res) => {
@@ -91,8 +91,8 @@ const updateuserProfile = async (req, res) => {
     console.log(req.file, "Uploaded file");
 
     let img = '';
-    if (req.file && req.file.filename) {
-        img = req.file.filename;
+    if (req.file && req.file.originalname) {
+        img = req.file.originalname;
     } else {
         const existingUser = await User.findById(req.body.id);
         if (existingUser) {
@@ -100,12 +100,11 @@ const updateuserProfile = async (req, res) => {
         }
     }
 
-
-    const { name, email, id ,imgUrl} = req.body;
+    const { name, email, id } = req.body;
 
     const user = await User.findOneAndUpdate(
         { _id: id },
-        { name, email, imgUrl: imgUrl },
+        { name, email, imgUrl: img },
         { new: true }
     );
     
@@ -147,7 +146,6 @@ const getuserProfile = async (req, res) => {
       
       res.json({ status: true, userData });
     } catch (error) {
-      console.error('Error in getuserProfile:', error);
       return res.status(500).json({ status: false, message: 'Internal server error.' });
     }
   };
