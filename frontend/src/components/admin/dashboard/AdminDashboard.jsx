@@ -1,9 +1,7 @@
 
-
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
 import Navbar from '../adminnavbar/adminnavbar'
-
-
 import EditUser from '../edituser/EditUser';
 import './admindashboard.css';
 import { Adduser } from '../shard/adduser';
@@ -23,33 +21,39 @@ function AdminDashboard() {
 
   const [search, setSearch] = useState("");
 
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(page);
+  const limit = 3;
+
 
 
   const searchRef = useRef(search);
+  const pageRef = useRef(page);
 
   useEffect(() => {
     searchRef.current = search;
   }, [search]);
 
+  useEffect(() => {
+    pageRef.current = page;
+  }, [page]);
 
 
-  console.log(searchRef.current, "searchRef")
 
   const debouncedFetchUser = useCallback(debounce(async () => {
     try {
-      const res = await getUserData({ search: searchRef.current }).unwrap("");
+      const res = await getUserData({ page: pageRef.current,search: searchRef.current }).unwrap("");
 
       setUsers(res.data);
+      setTotal(res.totalPages);
     } catch (error) {
       console.error("Failed to fetch user data:", error);
     }
   }, 100), []);
 
   useEffect(() => {
-
     debouncedFetchUser();
-
-  }, [getUserData, search]);
+  }, [page,search,getUserData]);
 
   const handleInput = (e) => {
     const value = e.target.value;
@@ -60,6 +64,19 @@ function AdminDashboard() {
   const handleEditComplete = () => {
     debouncedFetchUser();
   };
+
+
+  const prevPageHandler = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+  const nextPageHandler = () => {
+    setPage(page + 1);
+  };
+
+  console.log(page)
+
 
 
   return (
@@ -103,14 +120,14 @@ function AdminDashboard() {
                     {user.email.includes(search) ? (
                       <span>
 
-            
+
 
                         {user.email.split(search).map((part, index) => (
                           <span key={index}>
                             {part}
-      
+
                             {index !== user.email.split(search).length - 1 && (
-                              <span style={{  backgroundColor:'yellow' }}>{search}</span>
+                              <span style={{ backgroundColor: 'yellow' }}>{search}</span>
                             )}
                           </span>
                         ))}
@@ -125,7 +142,7 @@ function AdminDashboard() {
                     <EditUser currentUser={user} onEditComplete={handleEditComplete} />
                   </td>
                   <td className="border px-4 py-2 justify-center ">
-                  <DeleteUser onDeleteComplete={handleEditComplete} userId={user._id} />
+                    <DeleteUser onDeleteComplete={handleEditComplete} userId={user._id} />
                   </td>
                 </tr>
               ))
@@ -140,8 +157,26 @@ function AdminDashboard() {
 
           </tbody>
         </table>
+
       </div>
 
+      <div className="d-flex justify-content-start container mt-3">
+          <Button
+            variant="dark"
+            onClick={prevPageHandler}
+            disabled={page == 1}>
+            Previous
+          </Button>
+          <Row>
+            <Col className='pagination-button'>{page} of {total}</Col>
+          </Row> {page == total}
+          <Button
+            variant="dark"
+            onClick={nextPageHandler}
+            disabled={page == total}>
+            Next
+          </Button>
+      </div>
 
     </>
   )

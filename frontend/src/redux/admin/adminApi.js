@@ -15,15 +15,14 @@ export const apiSlice = createApi({
       }),
     }),
     getUserData: builder.mutation({
-      query: ({search}) => {
-        console.log(`Searching for: ${search}`); 
+      query: ({ search, page }) => {
+        console.log(`Searching for: ${search}  pages:${page}`);
         return {
-          url: `/api/admin/getUser?search=${search}`,
+          url: `/api/admin/getUser?search=${search}&page=${page}`,
           method: "GET",
         };
       },
-    }),
-    
+    }),    
     editUser: builder.mutation({
       query: (userData) => ({
         url: '/api/admin/updateuser',

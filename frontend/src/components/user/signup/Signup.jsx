@@ -34,8 +34,13 @@ function Signup() {
 
    
       try {
-        await signup(formData);
+        const response = await signup(formData);
+        console.log(response ,"response response response ")
+        if (response.data.status) {
         navigate('/');
+        }else{
+          setErrors({errors:response.data.message});
+        }
       } catch (error) {
         console.error('Signup failed:', error);
       }
@@ -44,13 +49,18 @@ function Signup() {
     }
   }
 
+  
+
   return (
     <>
       <div className="login-wrap">
         <div className="login">
           <div className="avatar">
+
           <span className="user"><img src="/userImages/user1.png" alt="User" /></span>
+     
           </div>
+          {errors&& <div className="error">{errors.errors}</div>}
          
           <form onSubmit={handleSubmit}>
             <input type="text" placeholder="Username" className="name" name="name" value={formData.name} onChange={handleChange} />

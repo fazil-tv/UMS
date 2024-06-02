@@ -32,7 +32,11 @@ function Login() {
           dispatch(signInSuccess(response.data.userData));
           navigate('/home');
         } else {
-          setErrorMessage(response.data.message);
+      
+
+          setErrorMessage({errors:response.data.message});
+
+         
         }
       } catch (error) {
         console.error('Login failed:', error);
@@ -41,7 +45,7 @@ function Login() {
       }
     } else {
       setErrors(formErrors); 
-      setErrorMessage('Invalid email or password'); 
+      setErrorMessage({errors:'Invalid email or password'}); 
     }
   };
 
@@ -49,12 +53,15 @@ function Login() {
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setErrors({ ...errors, email: '' }); 
+    setErrorMessage({errors:''}); 
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setErrors({ ...errors, password: '' }); 
+    setErrorMessage({errors:''}); 
   };
+
 
   return (
     <>
@@ -63,6 +70,9 @@ function Login() {
           <div className="avatar">
             <span className="user"><img src="/userImages/user1.png" alt="User" /></span>
           </div>
+
+          {errorMessage && <div className="error">{errorMessage.errors}</div>}
+
           <span className="user"><img src="" alt="" /></span>
           <form onSubmit={handleLogin}>
             <input type="" placeholder="Email" className="email" value={email} onChange={handleEmailChange} />

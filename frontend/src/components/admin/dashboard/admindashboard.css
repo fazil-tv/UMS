@@ -16,3 +16,11 @@
 .admin-userdata{
     padding-top: 10%;
 }
+
+
+.pagination-button{
+text-align: center;
+width: 100px !important;
+top: 6px;
+position: relative;
+}

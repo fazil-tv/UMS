@@ -76,8 +76,11 @@ export function Adduser({ onEditComplete }) {
             try {
                 const data = await adduser(form);
 
+                console.log(data.data.message,"daata dataaaaaaaaaa")
 
                 if (data.data.status) {
+
+                    
 
                     setFormData({
                         name: '',
@@ -88,6 +91,8 @@ export function Adduser({ onEditComplete }) {
                     setSelectedAvatar(null);
                     setIsOpen(false);
                     onEditComplete();
+                }else{
+                    setErrors({errors:data.data.message});
                 }
             } catch (error) {
                 console.log(error);
@@ -127,6 +132,8 @@ export function Adduser({ onEditComplete }) {
                                 />
                             </div>
                         </div>
+                        {errors && <div className="error text-xs text-red-500">{errors.errors}</div>}
+
 
                         <div className="grid grid-cols-2 items-center gap-2">
                             <Label htmlFor="name" className="text-left">

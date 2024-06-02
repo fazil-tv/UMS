@@ -35,20 +35,28 @@ const getUser = async (req, res) => {
 
     
         const search = req.query.search || '';
-        console.log(search,"search");
+        const page = parseInt(req.query.page);
+        const limit = 3;
+        const skip = (page - 1) * limit;
+
+
+        console.log(page,"page");
 
         const query = search?{email:{$regex:search,$options:'i'}}: {};
 
         console.log(query,"search query")
 
 
-        const user = await userModel.find(query).select("-password");
+        const user = await userModel.find(query).select("-password").skip(skip).limit(limit);
+
+        const totalUser = await userModel.countDocuments();
+        const totalPages = Math.ceil(totalUser/limit);
 
         console.log(user,"search user")
 
         if (user.length > 0) {
 
-            res.json({ status: true, data: user })
+            res.json({ status: true, data: user ,totalPages })
         } else {
             res.json({ status: false, message: "no users found" })
         }
