@@ -1,57 +1,81 @@
-import React from 'react'
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../../../redux/user/userApi';
-import {signInSuccess} from '../../../redux/user/userslice'
+import { signInSuccess } from '../../../redux/user/userslice';
 import './login.css';
-
-
+import { validateUserLogin } from '@/utils/validations/userLoginValidation';
 
 function Login() {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({}); 
 
-
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await login({ email, password });
 
+    const formErrors = validateUserLogin({ email, password }); 
 
-      if (response.data.status) {
-        dispatch(signInSuccess(response.data.userData));
-        navigate('/home');
-      } else {
-        setErrorMessage(response.data.message);
+    if (Object.values(formErrors).every(error => !error)) { 
+      setIsLoading(true); 
+
+      try {
+        const response = await login({ email, password });
+
+        if (response.data.status) {
+          dispatch(signInSuccess(response.data.userData));
+          navigate('/home');
+        } else {
+          setErrorMessage(response.data.message);
+        }
+      } catch (error) {
+        console.error('Login failed:', error);
+      } finally {
+        setIsLoading(false); 
       }
-    } catch (error) {
-      console.log('Login failed:', error);
+    } else {
+      setErrors(formErrors); 
+      setErrorMessage('Invalid email or password'); 
     }
+  };
+
+ 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setErrors({ ...errors, email: '' }); 
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setErrors({ ...errors, password: '' }); 
   };
 
   return (
     <>
-      <div class="login-wrap">
-        <div class="login">
-          <div class="avatar">
+      <div className="login-wrap">
+        <div className="login">
+          <div className="avatar">
+            <span className="user"><img src="/userImages/user1.png" alt="User" /></span>
           </div>
-          <span class="user"><img src="" alt="" /></span>
+          <span className="user"><img src="" alt="" /></span>
           <form onSubmit={handleLogin}>
-            <input type="email" placeholder="email" class="email" value={email} onChange={(e) => setEmail(e.target.value)} /><span class="arrow">&rarr;</span>
-            <input type="password" placeholder="Password" class="pass" value={password} onChange={(e) => setPassword(e.target.value)} /><span class="arrow">&rarr;</span>
+            <input type="" placeholder="Email" className="email" value={email} onChange={handleEmailChange} />
+            {errors.email && <div className="error">{errors.email}</div>}
+            <input type="password" placeholder="Password" className="pass" value={password} onChange={handlePasswordChange} />
+            {errors.password && <div className="error">{errors.password}</div>}
             <button className="loginbutton" type="submit" disabled={isLoading}>Login</button>
           </form>
+          <div className="p-4" wrap><br /><Link to="/signup"><span className="info">Don't have an account? <span className='signup' type="button">Signup</span></span></Link></div>
         </div>
       </div>
-      <div class="wrap mt-5 pt-5"><br /><Link to="/signup" className="underline"><span class="info">Dont have an account ? <span className='signup' type="button">Signup</span> </span></Link></div>
     </>
   )
 }
-export default Login
+
+export default Login;

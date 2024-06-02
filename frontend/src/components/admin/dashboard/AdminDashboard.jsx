@@ -15,51 +15,6 @@ import { useGetUserDataMutation } from '../../../redux/admin/adminApi';
 
 function AdminDashboard() {
 
-  // const [getUserData, { error }] = useGetUserDataMutation({});
-
-  // const [users, setUsers] = useState([]);
-
-
-  //   const [search, setSearch] = useState("");
-  //   const searchRef = useRef('');
-
-  //   const debouncedFetchUser = useCallback(debounce(async () => {
-  //     const res = await useGetUserDataMutation({ search: searchRef.current });
-  //     setUsers(res.user);
-  //   }, 500), []);
-
-  //   useEffect(() => {
-  //     debouncedFetchUser();
-  //   }, [getUserData,search]);
-
-
-  //   const handleInput = (e)=>{
-  //     setSearch(e.target.value);
-  //     searchRef.current = e.target.value;
-  //   }
-
-  //   console.log(searchRef,"searchRef")
-  //   console.log(search,"search")
-
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await getUserData({}).unwrap();
-  //       if (response.status) {
-  //         setUsers(response.data);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to fetch user data:", error);
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     fetchData();
-  //   }, []);
-
-  //   const handleEditComplete = () => {
-  //     fetchData();
-  //   };
 
   const [getUserData, { error }] = useGetUserDataMutation({});
 
@@ -68,7 +23,7 @@ function AdminDashboard() {
 
   const [search, setSearch] = useState("");
 
-  console.log(search, "okkkkkey");
+
 
   const searchRef = useRef(search);
 
@@ -84,12 +39,11 @@ function AdminDashboard() {
     try {
       const res = await getUserData({ search: searchRef.current }).unwrap("");
 
-      console.log(res.data, "respondsssssssssssss")
       setUsers(res.data);
     } catch (error) {
       console.error("Failed to fetch user data:", error);
     }
-  }, 500), []);
+  }, 100), []);
 
   useEffect(() => {
 
@@ -104,7 +58,7 @@ function AdminDashboard() {
 
 
   const handleEditComplete = () => {
-    fetchData();
+    debouncedFetchUser();
   };
 
 
@@ -117,28 +71,20 @@ function AdminDashboard() {
 
         <Input className="w-70" placeholder="Search users" value={search} onChange={handleInput} />
 
-
-
-
-
-
-
-
         <table className="border-collapse  admin-table mt-5">
           <thead>
             <tr>
-              <th className="border px-4 py-2">ID</th>
+              <th className="border px-4 py-2">#</th>
               <th className="border px-4 py-2 text-center">profile</th>
 
               <th className="border px-4 py-2">Name</th>
               <th className="border px-4 py-2">Email</th>
               <th className="border px-4 py-2">Status</th>
-              <th className="border px-4 py-2">Actions</th>
+              <th className="border px-4 py-2">Edite</th>
+              <th className="border px-4 py-2">Delete</th>
             </tr>
           </thead>
           <tbody>
-
-
             {users ? (
               users.map((user, index) => (
                 <tr key={user.id}>
@@ -177,7 +123,9 @@ function AdminDashboard() {
                   <td className="border px-4 py-2">{user.isAdmin ? "false" : "true"}</td>
                   <td className="border px-4 py-2 justify-center ">
                     <EditUser currentUser={user} onEditComplete={handleEditComplete} />
-                    <DeleteUser onDeleteComplete={handleEditComplete} userId={user._id} />
+                  </td>
+                  <td className="border px-4 py-2 justify-center ">
+                  <DeleteUser onDeleteComplete={handleEditComplete} userId={user._id} />
                   </td>
                 </tr>
               ))

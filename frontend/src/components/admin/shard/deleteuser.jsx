@@ -25,9 +25,6 @@ export function DeleteUser({ userId, onDeleteComplete }) {
 
             const data = await deleteUser(userId).unwrap();
 
-            console.log(data.status,"datassssssssssss")
-
-
             if (data.status) {
                 setIsOpen(false);
                 onDeleteComplete();

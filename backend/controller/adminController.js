@@ -61,8 +61,7 @@ const getUser = async (req, res) => {
 const updateuser = async (req, res) => {
 
     console.log("File upload triggered");
-    console.log(req.file, "Request file");
-    console.log(req.body, "Request body");
+ 
 
     let img = '';
     if (req.file && req.file.originalname) {
