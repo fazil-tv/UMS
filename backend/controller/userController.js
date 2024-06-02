@@ -125,11 +125,11 @@ const updateuserProfile = async (req, res) => {
 const getuserProfile = async (req, res) => {
     try {
 
-        console.log("ok");
+      
 
       const user = await User.findById();
 
-      console.log("ok set",decodedToken);
+   
   
       if (!user) {
         return res.status(404).json({ status: false, message: 'User not found.' });

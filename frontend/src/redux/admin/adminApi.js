@@ -15,11 +15,15 @@ export const apiSlice = createApi({
       }),
     }),
     getUserData: builder.mutation({
-      query: () => ({
-        url: "/api/admin/getUser",
-        method: "GET",
-      }),
+      query: ({search}) => {
+        console.log(`Searching for: ${search}`); 
+        return {
+          url: `/api/admin/getUser?search=${search}`,
+          method: "GET",
+        };
+      },
     }),
+    
     editUser: builder.mutation({
       query: (userData) => ({
         url: '/api/admin/updateuser',
@@ -40,7 +44,14 @@ export const apiSlice = createApi({
         method: 'POST',
       }),
     }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: '/api/admin/deleteuser',
+        method: 'POST',
+        body: { userId },
+      }),
+    }),
   }),
 })
 
-export const { useAdminloginMutation, useGetUserDataMutation, useEditUserMutation,  useAddUserMutation,  useLogoutMutation } = apiSlice;
+export const { useAdminloginMutation, useGetUserDataMutation, useEditUserMutation,  useAddUserMutation,  useLogoutMutation,useDeleteUserMutation } = apiSlice;

@@ -9,8 +9,6 @@ function adminnavbar() {
        <div class="container mx-auto flex justify-between items-center">
            <a class="text-white text-lg font-semibold admin-logo" href="#">Admin Dashboard</a>
            <div class="flex space-x-4">
-            
-
                <Adminlogout />
            </div>
        </div>

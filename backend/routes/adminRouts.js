@@ -5,7 +5,9 @@ import {
     adminLogin,
     getUser,
     updateuser,
-    adminlogout
+    adminlogout,
+    adminadduser,
+    deleteuser
 } from '../controller/adminController.js'
 import {uploadProfile} from '../middleware/multerMiddleware.js';
 
@@ -20,4 +22,7 @@ router.post('/updateuser',uploadProfile,updateuser)
 
 router.post('/adminlogout',adminlogout)
 
+router.post('/adminadduser',uploadProfile,adminadduser)
+
+router.post('/deleteuser',deleteuser)
 export default router;
