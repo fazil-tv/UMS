@@ -1,4 +1,4 @@
-
+import { useAdminAuthentication } from '@/hook/auth';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
 import Navbar from '../adminnavbar/adminnavbar'
@@ -13,6 +13,7 @@ import { useGetUserDataMutation } from '../../../redux/admin/adminApi';
 
 function AdminDashboard() {
 
+  const { isLoggedIn, isFetching } = useAdminAuthentication();
 
   const [getUserData, { error }] = useGetUserDataMutation({});
 
@@ -25,8 +26,6 @@ function AdminDashboard() {
   const [total, setTotal] = useState(page);
   const limit = 3;
 
-
-
   const searchRef = useRef(search);
   const pageRef = useRef(page);
 
@@ -37,8 +36,6 @@ function AdminDashboard() {
   useEffect(() => {
     pageRef.current = page;
   }, [page]);
-
-
 
   const debouncedFetchUser = useCallback(debounce(async () => {
     try {
@@ -76,6 +73,17 @@ function AdminDashboard() {
   };
 
   console.log(page)
+
+
+  if (isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isLoggedIn) {
+    navigate("/admin");
+    <Navigate to="/adminlogin" replace />;
+    return null;
+  }
 
 
 

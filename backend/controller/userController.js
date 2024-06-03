@@ -12,6 +12,7 @@ const authUser = (async (req, res) => {
     res.json({ status: true, message: 'welcome to home' });
 });
 
+
 const registerUser = (async (req, res) => {
     const { name, email, password } = req.body;
     console.log(req.body);
@@ -46,12 +47,10 @@ const registerUser = (async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
-    console.log('login');
+    
 
     const user = await User.findOne({ email });
     
-   
-
     if (user) {
       
         const check = await bcrypt.compare(password, user.password);
@@ -151,7 +150,7 @@ const getuserProfile = async (req, res) => {
   };
 
 const logoutUser = async (req, res) => {
-    res.clearCookie('token');
+    res.clearCookie('access_token');
     res.json({ status: true, message: 'logged out successfully' });
 };
 

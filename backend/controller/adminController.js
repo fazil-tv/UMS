@@ -13,6 +13,8 @@ const adminCredentials = {
     password: password,
 };
 
+
+
 const adminLogin = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -29,6 +31,13 @@ const adminLogin = async (req, res) => {
         console.log(error)
     }
 }
+
+
+const adminauth = (async (req, res) => {
+    console.log("OOOOOOOOOOOOOOOOOOOOOps")
+    res.json({ status: true, message: 'welcome to home' });
+});
+
 
 const getUser = async (req, res) => {
     try {
@@ -174,5 +183,6 @@ export {
     updateuser,
     adminlogout,
     adminadduser,
-    deleteuser
+    deleteuser,
+    adminauth
 }

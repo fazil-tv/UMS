@@ -50,7 +50,13 @@ export const apiSlice = createApi({
         body: { userId },
       }),
     }),
+    adminAuth: builder.mutation({
+      query: () => ({
+        url: "/api/admin/adminauth",
+        method: "GET",
+      }),
+    }),
   }),
 })
 
-export const { useAdminloginMutation, useGetUserDataMutation, useEditUserMutation,  useAddUserMutation,  useLogoutMutation,useDeleteUserMutation } = apiSlice;
+export const { useAdminloginMutation, useGetUserDataMutation, useEditUserMutation,  useAddUserMutation,  useLogoutMutation,useDeleteUserMutation ,useAdminAuthMutation} = apiSlice;

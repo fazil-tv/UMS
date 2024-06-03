@@ -7,7 +7,8 @@ import {
     updateuser,
     adminlogout,
     adminadduser,
-    deleteuser
+    deleteuser,
+    adminauth
 } from '../controller/adminController.js'
 import {uploadProfile} from '../middleware/multerMiddleware.js';
 
@@ -17,6 +18,8 @@ const router = express.Router();
 router.post('/adminlogin',adminLogin)
 
 router.get('/getUser',getUser)
+
+router.get('/adminauth',adminauth)
 
 router.post('/updateuser',uploadProfile,updateuser)
 

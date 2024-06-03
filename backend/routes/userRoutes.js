@@ -14,11 +14,11 @@ import authenticateUser from '../middleware/authMiddlewar.js';
 import {uploadProfile} from '../middleware/multerMiddleware.js';
 
 
-router.get('/auth', authUser)
+router.get('/auth',authenticateUser,authUser)
 router.post('/register', registerUser)
-router.post('/login', login)
+router.post('/login',login)
 router.post('/logout', logoutUser)
-router.get('/profile', authenticateUser,getuserProfile); 
+router.get('/profile',getuserProfile); 
 router.post('/updateuser', uploadProfile, updateuserProfile)
 
 

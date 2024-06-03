@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../../../redux/user/userApi';
 import { signInSuccess } from '../../../redux/user/userslice';
 import './login.css';
 import { validateUserLogin } from '@/utils/validations/userLoginValidation';
+import { useAuthentication } from '@/hook/auth';
 
 function Login() {
   const dispatch = useDispatch();
@@ -13,17 +14,17 @@ function Login() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState({}); 
+  const [errors, setErrors] = useState({});
 
   const [login] = useLoginMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const formErrors = validateUserLogin({ email, password }); 
+    const formErrors = validateUserLogin({ email, password });
 
-    if (Object.values(formErrors).every(error => !error)) { 
-      setIsLoading(true); 
+    if (Object.values(formErrors).every(error => !error)) {
+      setIsLoading(true);
 
       try {
         const response = await login({ email, password });
@@ -32,36 +33,51 @@ function Login() {
           dispatch(signInSuccess(response.data.userData));
           navigate('/home');
         } else {
-      
 
-          setErrorMessage({errors:response.data.message});
 
-         
+          setErrorMessage({ errors: response.data.message });
+
+
         }
       } catch (error) {
         console.error('Login failed:', error);
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     } else {
-      setErrors(formErrors); 
-      setErrorMessage({errors:'Invalid email or password'}); 
+      setErrors(formErrors);
+      setErrorMessage({ errors: 'Invalid email or password' });
     }
   };
 
- 
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setErrors({ ...errors, email: '' }); 
-    setErrorMessage({errors:''}); 
+    setErrors({ ...errors, email: '' });
+    setErrorMessage({ errors: '' });
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setErrors({ ...errors, password: '' }); 
-    setErrorMessage({errors:''}); 
+    setErrors({ ...errors, password: '' });
+    setErrorMessage({ errors: '' });
   };
 
+
+  const { authLoading, isLoggedIn } = useAuthentication();
+
+  console.log("authLoading", authLoading)
+  console.log("isLoggedInsss***********************", isLoggedIn)
+
+
+  if (authLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isLoggedIn) {
+    navigate('/home');
+    return null
+  }
 
   return (
     <>

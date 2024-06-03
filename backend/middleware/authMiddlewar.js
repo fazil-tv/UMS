@@ -9,8 +9,6 @@ const authenticateUser = (req, res, next) => {
 
     const token = req.cookies.access_token;
 
-    console.log(token,"#####################")
-
     if (!token) {
         return res.status(401).json({ status: false, message: 'No token available' });
     }
