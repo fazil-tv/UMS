@@ -1,6 +1,4 @@
 import express from 'express'
-
-
 import {
     adminLogin,
     getUser,
@@ -12,20 +10,24 @@ import {
 } from '../controller/adminController.js'
 import {uploadProfile} from '../middleware/multerMiddleware.js';
 
+import { authenticateAdmin } from '../middleware/authMiddlewar.js';
+
 
 const router = express.Router();
 
-router.post('/adminlogin',adminLogin)
 
-router.get('/getUser',getUser)
+router.get('/adminauth',authenticateAdmin,adminauth);
 
-router.get('/adminauth',adminauth)
+router.post('/adminlogin',adminLogin);
 
-router.post('/updateuser',uploadProfile,updateuser)
+router.get('/getUser',getUser);
 
-router.post('/adminlogout',adminlogout)
+router.post('/updateuser',uploadProfile,updateuser);
+
+router.post('/adminlogout',adminlogout);
 
 router.post('/adminadduser',uploadProfile,adminadduser)
 
 router.post('/deleteuser',deleteuser)
+
 export default router;

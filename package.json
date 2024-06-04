@@ -16,7 +16,8 @@
     "nodemon": "^3.1.1",
     "react-bootstrap": "^2.10.2",
     "react-icon": "^1.0.0",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "redux-logger": "^3.0.6"
   },
   "name": "userauthentication",
   "version": "1.0.0",

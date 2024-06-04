@@ -68,12 +68,10 @@ const login = async (req, res) => {
                 imgUrl: user.imgUrl ? user.imgUrl : ""
             };
 
-            console.log(userData)
             res.cookie('access_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-            res.json({ status: true, message: 'Login successful!', userData });
+            res.status(200).json({ status: true, statuscode:"200", message: 'Login successful!', userData });
             
         } else {
-
             res.json({ status: false, message: 'Invalid email or password.' });
         }
     } else {

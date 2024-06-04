@@ -9,12 +9,11 @@ import { DeleteUser } from '../shard/deleteuser';
 import { Input } from "@/components/ui/input"
 import { debounce } from '../../../utils/debounce';
 import { useGetUserDataMutation } from '../../../redux/admin/adminApi';
+import { useNavigate } from 'react-router-dom';
 
 
 function AdminDashboard() {
-
-  const { isLoggedIn, isFetching } = useAdminAuthentication();
-
+  const navigate = useNavigate();
   const [getUserData, { error }] = useGetUserDataMutation({});
 
   const [users, setUsers] = useState([]);
@@ -39,7 +38,7 @@ function AdminDashboard() {
 
   const debouncedFetchUser = useCallback(debounce(async () => {
     try {
-      const res = await getUserData({ page: pageRef.current,search: searchRef.current }).unwrap("");
+      const res = await getUserData({ page: pageRef.current, search: searchRef.current }).unwrap("");
 
       setUsers(res.data);
       setTotal(res.totalPages);
@@ -50,7 +49,7 @@ function AdminDashboard() {
 
   useEffect(() => {
     debouncedFetchUser();
-  }, [page,search,getUserData]);
+  }, [page, search, getUserData]);
 
   const handleInput = (e) => {
     const value = e.target.value;
@@ -75,14 +74,19 @@ function AdminDashboard() {
   console.log(page)
 
 
-  if (isFetching) {
-    return <div>Loading...</div>;
-  }
 
-  if (!isLoggedIn) {
-    navigate("/admin");
-    <Navigate to="/adminlogin" replace />;
-    return null;
+
+
+    const { isLoggedIn, isFetching } = useAdminAuthentication();
+
+    useEffect(() => {
+      if (!isFetching && !isLoggedIn) {
+          navigate('/adminlogin');
+      }
+  }, [isFetching, isLoggedIn, navigate]);
+
+  if (isFetching) {
+      return <div>Loading...</div>;
   }
 
 
@@ -169,21 +173,21 @@ function AdminDashboard() {
       </div>
 
       <div className="d-flex justify-content-start container mt-3">
-          <Button
-            variant="dark"
-            onClick={prevPageHandler}
-            disabled={page == 1}>
-            Previous
-          </Button>
-          <Row>
-            <Col className='pagination-button'>{page} of {total}</Col>
-          </Row> {page == total}
-          <Button
-            variant="dark"
-            onClick={nextPageHandler}
-            disabled={page == total}>
-            Next
-          </Button>
+        <Button
+          variant="dark"
+          onClick={prevPageHandler}
+          disabled={page == 1}>
+          Previous
+        </Button>
+        <Row>
+          <Col className='pagination-button'>{page} of {total}</Col>
+        </Row> {page == total}
+        <Button
+          variant="dark"
+          onClick={nextPageHandler}
+          disabled={page == total}>
+          Next
+        </Button>
       </div>
 
     </>

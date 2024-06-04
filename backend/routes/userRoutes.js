@@ -10,7 +10,7 @@ import {
     authUser
 } from '../controller/userController.js'
 
-import authenticateUser from '../middleware/authMiddlewar.js';
+import {authenticateUser} from '../middleware/authMiddlewar.js';
 import {uploadProfile} from '../middleware/multerMiddleware.js';
 
 

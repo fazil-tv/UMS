@@ -22,7 +22,7 @@ const adminLogin = async (req, res) => {
 
             const token = jwt.sign({ email: email }, process.env.WEB_TOKEN, { expiresIn: '1d' });
             console.log(token)
-            res.cookie('access_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+            res.cookie('access_admin_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
             res.status(200).json({ message: 'Login successful' });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
@@ -34,7 +34,7 @@ const adminLogin = async (req, res) => {
 
 
 const adminauth = (async (req, res) => {
-    console.log("OOOOOOOOOOOOOOOOOOOOOps")
+    console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
     res.json({ status: true, message: 'welcome to home' });
 });
 
@@ -42,34 +42,33 @@ const adminauth = (async (req, res) => {
 const getUser = async (req, res) => {
     try {
 
-    
+
         const search = req.query.search || '';
         const page = parseInt(req.query.page);
         const limit = 3;
         const skip = (page - 1) * limit;
 
 
-        console.log(page,"page");
+        console.log(page, "page");
 
-        const query = search?{email:{$regex:search,$options:'i'}}: {};
+        const query = search ? { email: { $regex: search, $options: 'i' } } : {};
 
-        console.log(query,"search query")
+        console.log(query, "search query")
 
 
         const user = await userModel.find(query).select("-password").skip(skip).limit(limit);
 
         const totalUser = await userModel.countDocuments();
-        const totalPages = Math.ceil(totalUser/limit);
+        const totalPages = Math.ceil(totalUser / limit);
 
-        console.log(user,"search user")
+        console.log(user, "search user")
 
         if (user.length > 0) {
 
-            res.json({ status: true, data: user ,totalPages })
+            res.json({ status: true, data: user, totalPages })
         } else {
             res.json({ status: false, message: "no users found" })
         }
-
     } catch (error) {
         console.log(error)
     }
@@ -78,7 +77,7 @@ const getUser = async (req, res) => {
 const updateuser = async (req, res) => {
 
     console.log("File upload triggered");
- 
+
 
     let img = '';
     if (req.file && req.file.originalname) {
@@ -111,7 +110,8 @@ const updateuser = async (req, res) => {
 }
 
 const adminlogout = async (req, res) => {
-    res.clearCookie('access_token');
+   
+    res.clearCookie('access_admin_token');
     res.status(200).json({ message: 'Logout successful' });
 }
 

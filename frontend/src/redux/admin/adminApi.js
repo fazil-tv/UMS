@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const BASE_URL = 'http://localhost:4001';
 
 
-export const apiSlice = createApi({
-  reducerPath: 'api',
+export const adminApiSlice = createApi({
+  reducerPath: 'adminApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: "include" }),
   endpoints: (builder) => ({
     adminlogin: builder.mutation({
@@ -59,4 +59,4 @@ export const apiSlice = createApi({
   }),
 })
 
-export const { useAdminloginMutation, useGetUserDataMutation, useEditUserMutation,  useAddUserMutation,  useLogoutMutation,useDeleteUserMutation ,useAdminAuthMutation} = apiSlice;
+export const { useAdminloginMutation, useGetUserDataMutation, useEditUserMutation,  useAddUserMutation,  useLogoutMutation,useDeleteUserMutation ,useAdminAuthMutation} = adminApiSlice;

@@ -28,16 +28,16 @@ function Login() {
 
       try {
         const response = await login({ email, password });
-
+        console.log(response,"response---------------")
+     
         if (response.data.status) {
+
+        
           dispatch(signInSuccess(response.data.userData));
           navigate('/home');
+
         } else {
-
-
           setErrorMessage({ errors: response.data.message });
-
-
         }
       } catch (error) {
         console.error('Login failed:', error);
@@ -66,10 +66,6 @@ function Login() {
 
   const { authLoading, isLoggedIn } = useAuthentication();
 
-  console.log("authLoading", authLoading)
-  console.log("isLoggedInsss***********************", isLoggedIn)
-
-
   if (authLoading) {
     return <div>Loading...</div>;
   }
@@ -86,9 +82,7 @@ function Login() {
           <div className="avatar">
             <span className="user"><img src="/userImages/user1.png" alt="User" /></span>
           </div>
-
           {errorMessage && <div className="error">{errorMessage.errors}</div>}
-
           <span className="user"><img src="" alt="" /></span>
           <form onSubmit={handleLogin}>
             <input type="" placeholder="Email" className="email" value={email} onChange={handleEmailChange} />

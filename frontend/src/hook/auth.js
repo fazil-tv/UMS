@@ -13,7 +13,6 @@ export const useAuthentication = () => {
             try {
                 setAuthLoading(true);
                 const response = await userauth().unwrap();
-                console.log(response.status, 'authResponse');
 
                 if (response.status) {
                     setIsLoggedIn(true);
@@ -45,14 +44,21 @@ export const useAdminAuthentication = () => {
         const checkAdminAuthentication = async () => {
             try {
                 setIsFetching(true);
-                const response = await adminAuth({}).unwrap();
-                console.log(response,'authResponse');
+                
+                const response = await adminAuth().unwrap();
+
+                console.log(response,'authResponse$$$$$$$$$$$$$$$$');
                 
                 if (response.status) {
+
                     setIsLoggedIn(true);
+
                 } else {
+
                     setIsLoggedIn(false);
+                    
                 }
+                
             } catch (error) {
                 setIsLoggedIn(false);
                 console.error('Error checking authentication:', error);

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAdminloginMutation } from '@/redux/admin/adminApi';
 import { validateadminLogin } from '@/utils/validations/adminLoginValidation';
-
+import { useAdminAuthentication } from '@/hook/auth';
 function Adminlogin() {
 
 
@@ -23,9 +23,13 @@ function Adminlogin() {
   const [login] = useAdminloginMutation();
 
   const handleLogin = async (e) => {
+
+  
     e.preventDefault();
 
     const formErrors = validateadminLogin({ email, password });
+
+    
 
     if (Object.values(formErrors).every(error => !error)) {
       setIsLoading(true);
@@ -33,7 +37,8 @@ function Adminlogin() {
 
       try {
         const response = await login({ email, password });
-        console.log(response);
+      
+
         if (response.data) {
           navigate('/admindashboard');
 
@@ -62,6 +67,22 @@ function Adminlogin() {
     setPassword(e.target.value);
     setErrors({ ...errors, password: '' }); 
   };
+
+
+  const { isFetching, isLoggedIn } = useAdminAuthentication();
+
+  console.log(isFetching,"admin isFetching")
+  console.log(isLoggedIn,"admin isLoggedIn")
+
+
+  if (isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  if (isLoggedIn) {
+    navigate('/admindashboard');
+    return null
+  }
 
 
   return (
